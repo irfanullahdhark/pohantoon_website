@@ -1,0 +1,365 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="ar-fa">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>افغانستان نیوز</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon.png' %}">
+
+    <!-- CSS
+    ============================================ -->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-free-6.4.0-web/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/vendor/base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/plugins.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    {% block link_block %}
+    {% endblock link_block %}
+
+    <style>
+    {% block style_block %}
+    {% endblock style_block %}
+    </style>
+
+
+
+</head>
+
+<body class="theme-color-2" >
+    <div class="main-wrapper">
+        <div class="mouse-cursor cursor-outer"></div>
+        <div class="mouse-cursor cursor-inner"></div>
+
+        <div id="my_switcher" class="my_switcher">
+            <ul>
+                <li>
+                    <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                        <span title="Light Mode">روښانه</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                        <span title="Dark Mode">تیاره</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <!-- Start Header -->
+        <header class="header axil-header  header-dark header-sticky ">
+            <div class="header-wrap">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-3 col-12">
+                        <div class="logo">
+                            <a href="{% url 'home'%}">
+                                <img class="dark-logo" src="{% static 'assets/images/logo/logo-white.png' %}" alt="Blogar logo">
+                                <img class="light-logo" src="{% static 'assets/images/logo/logo-white2.png' %}" alt="Blogar logo">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-7 d-none d-xl-block">
+                        <div class="mainmenu-wrapper">
+                            <nav class="mainmenu-nav">
+                                <!-- Start Mainmanu Nav -->
+                                <ul class="mainmenu" style="display:flex; flex-direction: row-reverse;">
+                                    <li><a href="{% url 'home' %}">کور پاڼه</a>
+                                    </li>
+                                    {% for ctg in categories %}
+                                    <li class="menu-item-has-children megamenu-wrapper"><a href="{% url 'post-list' ctg.id %}">{{ctg.cat_name}}</a>
+                                        <ul class="megamenu-sub-menu">
+                                            <li class="megamenu-item">
+
+                                                <!-- Start Verticle Nav  -->
+                                                <div class="axil-vertical-nav">
+                                                    <ul class="vertical-nav-menu">
+                                                        {% for sub_cat in ctg.sub_category.all %}
+                                                        <li class="vertical-nav-item active">
+                                                            <a class="hover-flip-item-wrapper" href="#tab{{sub_cat.id}}">
+                                                                <span class="hover-flip-item">
+                                                                    <span data-text="{{sub_cat}}">{{sub_cat}}</span>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <!-- Start Verticle Nav  -->
+
+
+                                                <!-- Start Verticle Menu  -->
+                                                <div class="axil-vertical-nav-content">
+                                                    {% with ch=ctg.sub_category.first %}
+
+                                                    {% for sub_cat in ctg.sub_category.all %}
+                                                    <!-- Start One Item  -->
+                                                    <div class="axil-vertical-inner tab-content" id="tab{{sub_cat.id}}" {% if sub_cat.id == ch.id   %} style="display: block;" {% endif %} >
+                                                        <div class="axil-vertical-single">
+                                                            <div class="row">
+                                                                {% for post in sub_cat.post_sub.all|slice:4 %}
+                                                                {% if post.is_approved %}
+                                                                <!-- Start Post List  -->
+                                                                <div class="col-lg-3">
+                                                                    <div class="content-block image-rounded">
+                                                                        <div class="post-thumbnail mb--20">
+                                                                            <a href="{% url 'post-details' post.id %}">
+                                                                                <img src="{{post.image.url }}" alt="post-image">
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="post-content">
+                                                                            <div class="post-cat">
+                                                                                <div class="post-cat-list">
+                                                                                    <a class="hover-flip-item-wrapper" href="{% url 'post-details' post.id %}">
+                                                                                        <span class="hover-flip-item">
+                                                            <span data-text="{{post.orginal_source_name}}">{{post.orginal_source_name}}</span>
+                                                                                        </span>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <h5 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End Post List  -->
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End One Item  -->
+                                                    {% endfor %}
+
+                                                    {% endwith %}
+
+                                                </div>
+                                                <!-- End Verticle Menu  -->
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+                                <!-- End Mainmanu Nav -->
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
+                        <div class="header-search text-end d-flex align-items-center">
+                            <form class="header-search-form d-sm-block d-none" style="direction:rtl;" action="{% url 'search' %}" method="get">
+                                <div class="axil-search form-group">
+                                    <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+                                    <input type="text" class="form-control" placeholder="لټون" name="search_val">
+                                </div>
+                            </form>
+                            <div class="mobile-search-wrapper d-sm-none d-block">
+                                <button class="search-button-toggle"><i class="fa fa-search"></i></button>
+                                <form class="header-search-form" action="{% url 'search' %}" method="get" style="direction:rtl;">
+                                    <div class="axil-search form-group">
+                                        <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="لټون" name="search_val">
+                                    </div>
+                                </form>
+                            </div>
+                            <ul class="metabar-block">
+                                {% if request.user.is_authenticated %}
+                                {% if request.user.image %}
+                                <li><a href="{% url 'author' request.user.id %}"><img src="{{request.user.image.url}}" alt="Author Images"></a></li>
+                                {% endif %}
+                                {% endif %}
+                            </ul>
+                            <!-- Start Hamburger Menu  -->
+                            <div class="hamburger-menu d-block d-xl-none">
+                                <div class="hamburger-inner">
+                                    <div class="icon"><i class="fa fa-bars"></i></div>
+                                </div>
+                            </div>
+                            <!-- End Hamburger Menu  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Start Header -->
+
+          <!-- Start Mobile Menu Area  -->
+          <div class="popup-mobilemenu-area">
+            <div class="inner">
+                <div class="mobile-menu-top">
+                    <div class="logo">
+                        <a href="{% url 'home' %}">
+                            <img class="dark-logo" src="{% static 'assets/images/logo/logo-black.png' %}" alt="Logo Images">
+                            <img class="light-logo" src="{% static 'assets/images/logo/logo-white2.png' %}" alt="Logo Images">
+                        </a>
+                    </div>
+                    <div class="mobile-close">
+                        <div class="icon">
+                            <i class="fa fa-window-close"></i>
+                        </div>
+                    </div>
+                </div>
+                <ul class="mainmenu">
+                    {% for main_cat in categories %}
+                    <li class="menu-item-has-children"><a href="#">{{main_cat}}</a>
+                        <ul class="axil-submenu">
+                            {% for sub_cat in main_cat.sub_category.all %}
+                            <li><a href="{% url 'sub-post-list' sub_cat.id %}">{{sub_cat}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+         </div>
+        <!-- End Mobile Menu Area  -->
+
+        {% block body_block %}
+
+        {% endblock body_block %}
+
+            <!-- Start Instagram Area  -->
+        <div class="axil-instagram-area axil-section-gap bg-color-grey" style="direction:rtl;">
+            <div class="container-fluid">
+                <div class="row" >
+                    <div class="col-lg-12" style="rtl;">
+                        <div class="section-title">
+                            <h2 class="title">فیسبوک پوسټونه</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt--30">
+                    <div class="col-lg-12">
+                        <ul class="instagram-post-list d-flex justify-content-center">
+                            {% for post in fb_post %}
+                            <li class="single-post">
+                                {{post.post_html|safe }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Instagram Area  -->
+
+        
+
+          <!-- Start Footer Area  -->
+        <div class="axil-footer-area axil-footer-style-1 footer-variation-three bg-color-black">
+            <!-- Start Footer Top Area  -->
+            <div class="footer-top">
+                <div class="container" >
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="logo">
+                                <a href="{% url 'home' %}">
+                                    <img class="light-logo" src="{% static 'assets/images/logo/logo-white2.png' %}" alt="Logo Images">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8">
+                            <!-- Start Post List  -->
+                            <div class="d-flex justify-content-start mt_sm--15 justify-content-md-end align-items-center flex-wrap">
+                                <h5 class="follow-title mb--0 mr--20">دلته مو په پولنیزو رسنیو کی وڅارئ</h5>
+                                <ul class="social-icon color-tertiary md-size justify-content-start">
+                                    <li><a href="https://www.facebook.com/irfanullah.ahmadzai.549/"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://www.instagram.com/irfan.khan9902/"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="https://twitter.com/IrfanullahDhark"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/in/irfan-khan-3b2519266/"><i class="fab fa-linkedin-in"></i></a></li>
+                                </ul>
+                            </div>
+                            <!-- End Post List  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Footer Top Area  -->
+
+            <!-- Start Copyright Area  -->
+            <div class="copyright-area">
+                <div class="container">
+                    <div class="row align-items-center" style="direction:rtl;">
+                        <div class="col-lg-9 col-md-12">
+                            <div class="copyright-left">
+                                <ul class="mainmenu justify-content-start">
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'contact' %}">
+                                            <span class="hover-flip-item">
+                                                <span data-text="Contact Us">Contact Us</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                     <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'about' %}">
+                                            <span class="hover-flip-item">
+                                        <span data-text="About">About</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="hover-flip-item-wrapper" href="{% url 'privacy' %}">
+                                            <span class="hover-flip-item">
+                                        <span data-text="Privacy">Privacy</span>
+                                            </span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-12">
+                            <div class="copyright-right text-start text-lg-end mt_md--20 mt_sm--20">
+                                <p class="b3">Irfanullah Dhark All Rights Reserved © 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Copyright Area  -->
+        </div>
+        <!-- End Footer Area  -->
+
+
+
+          <!-- Start Back To Top  -->
+          <a id="backto-top"></a>
+          <!-- End Back To Top  -->
+
+</div>
+
+    <!-- JS
+============================================ -->
+    <!-- Modernizer JS -->
+    <script src="{% static 'assets/js/vendor/modernizr.min.js' %}"></script>
+    <!-- jQuery JS -->
+    <script src="{% static 'assets/js/vendor/jquery.js' %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'assets/js/vendor/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/tweenmax.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/js.cookie.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery.style.switcher.js' %}"></script>
+
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    {% block script_block %}
+
+    {% endblock script_block %}
+
+</body>
+
+</html>

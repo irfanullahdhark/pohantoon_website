@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block body_block %}
+
+        <!-- Start Banner Area  -->
+        <div class="axil-banner banner-style-1" style="background-image: url({{about.image.url}}); direction:rtl;" >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner">
+                            <h1 class="title">زمونږ په اړه</h1>
+                            <p class="description">{{about.bio}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Banner Area  -->
+
+        <!-- Start Post List Wrapper  -->
+        <div class="axil-post-list-area axil-section-gap bg-color-white" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-xl-8">
+                        <!-- Start About Area  -->
+                        <div class="axil-about-us">
+                            <div class="inner">{{about.description}}</div>
+                        </div>
+                        <!-- End About Area  -->
+                    </div>
+                    <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+                        <!-- Start Sidebar Area  -->
+                        <div class="sidebar-inner">
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_search mb--30">
+                                <h5 class="widget-title">لټون</h5>
+                                <form action="{% url 'search' %}" method="get">
+                                    <div class="axil-search form-group">
+                                        <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="لټون" name="search_val">
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End Single Widget  -->
+
+                             <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_postlist mb--30">
+                                <h5 class="widget-title">نوی لیکنی </h5>
+                                <!-- Start Post List  -->
+                                <div class="post-medium-block">
+                                    {% for post in related_post %}
+                                    <!-- Start Single Post  -->
+                                    <div class="content-block post-medium mb--20">
+                                        <div class="post-thumbnail">
+                                            <a href="{% url 'post-details' post.id %}">
+                                                <img src="{{post.image.url}}" alt="Post Images">
+                                            </a>
+                                        </div>
+                                        <div class="post-content">
+                                            <h6 class="title"><a href="post-details.html">{{post.title}}</a></h6>
+                                            <div class="post-meta">
+                                                <ul class="post-meta-list">
+                                                    <li>{{post.datetime}}</li>
+                                                    <li>{{post.view}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Single Post  -->
+                                     {% endfor %}
+
+                                </div>
+                                <!-- End Post List  -->
+
+                            </div>
+                            <!-- End Single Widget  -->
+
+
+
+
+
+                        </div>
+                        <!-- End Sidebar Area  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Post List Wrapper  -->
+
+        <!-- Start Back To Top  -->
+        <a id="backto-top"></a>
+        <!-- End Back To Top  -->
+
+{% endblock body_block %}
+
+ 

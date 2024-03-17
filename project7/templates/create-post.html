@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+{% block body_block %}
+
+      <div class="container mt-5" style="direction:rtl;">
+           <div class="row p-5  bg-color-grey">
+                    <h2 class="p-5">خپل پوهه مو له نورو سره شریکه کړی. ترڅو یو پوه او با تعلیمه افغانستان ولرو.</h2>
+           </div>
+
+
+
+        <div class="row" style="margin-right:10%;">
+            <div class="col-10  mt-5" >
+                <form method="post" enctype="multipart/form-data" style="direction:rtl;">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">{{field.label}}{{field}}</div>
+                    {% endfor %}
+                    <hr>
+                    <button class="btn btn-success mb-5" style="width:auto; font-size:20px;">استول</button>
+                </form>
+            </div>
+        </div>
+     </div>
+
+
+
+        <!-- Start Back To Top  -->
+        <a id="backto-top"></a>
+        <!-- End Back To Top  -->
+{% endblock body_block %}
+
+{% block script_block %}
+<script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+
+<script>
+ tinymce.init({
+        selector: 'textarea',
+        plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen',
+        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+        menubar: 'file edit view insert format tools table help',
+    });
+</script>
+{% endblock script_block %}

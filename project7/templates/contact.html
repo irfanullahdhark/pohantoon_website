@@ -1,0 +1,135 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+{% block body_block %}
+        <!-- Start Banner Area  -->
+        <div class="axil-banner banner-style-1 bg_image bg_image--3" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner">
+                            <h1 class="title">له موږ سره په اړیکه کې شئ</h1>
+                            <p class="description">
+                                    په ذهن کې یو څه لرئ؟ موږ ټول غوږ یو! که تاسو  تازه  نوی لیکنه لری او یا زموږ د پوښښ لپاره یو وړاندیز لرئ، یا په ساده ډول غواړئ مونږ سره اړیکه ونیسی، موږ ستاسو د معلوماتو هرکلی کوو.<br> ستاسو نظر زموږ لپاره ارزښتناکه دی ځکه چې موږ هڅه کوو خپلو لوستونکو ته د خبرونو غوره تجربه چمتو کړو.
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Banner Area  -->
+
+        <!-- Start Post List Wrapper  -->
+        <div class="axil-post-list-area axil-section-gap bg-color-white" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-xl-8">
+                        <!-- Start About Area  -->
+                        <div class="axil-about-us">
+                            <div class="inner">
+                                <h2> ستاسو خبرونه مهم دي</h2>
+                                <p></p>
+                                <p><strong>افغانستان نیوز کې، موږ باور لرو چې هرڅوک د ویلو وړ کیسه لري. که دا سیمه ایز پیښه وي، نړیواله مسله، یا شخصي تجربه، ستاسو خبرونه موږ ته مهم دي. موږ د متنوع غږونو پراخولو او په مهمو موضوعاتو رڼا اچولو ته ژمن یو، او ستاسو مرستې موږ سره د دې ماموریت په ترلاسه کولو کې مرسته کوي.     </strong></p>
+                                <h2>څنګه له مونږ سره اړیکه نیسې</h2>
+                                <p><strong>موږ سره اړیکه اسانه ده. په ساده ډول د خپل پیغام سره لاندې فورمه ډکه کړئ، او موږ به ژر تر ژره تاسو ته ورسیږو. همدارنګه، تاسو کولی شئ موږ ته مستقیم د بریښنالیک یا تلیفون له لارې اړیکه ونیسئ. </strong></p
+                                <h2>له مونږ سره اوسې</h2>
+                                <p><strong>وروستي خبرونو په اړه له مونږ سره پاتې شئ او په ټولنیزو رسنیو کې له موږ سره اړیکه ونیسئ. د ریښتیني وخت تازه معلوماتو ، د پردې شاته لیدونو ، او متقابل بحثونو لپاره موږ په فیسبوک کې تعقیب کړئ. موږ ستاسو ښکیلتیا ته ارزښت ورکوو او زموږ د ویب پاڼې له محدودیتونو هاخوا ستاسو سره د اړیکو په لټه کې یو.</strong></p>
+
+                            </div>
+                            <!-- Start Contact Form  -->
+                            <div class="axil-section-gapTop axil-contact-form-area" style="direction:rtl;">
+                                <h4 class="title mb--10">دلته مونږ ته بریښنالیک پریږدې</h4>
+                                <p class="b3 mb--30">تاسو بریښنالیک به نورو ته نه خپریږی. لاندی ټولی خانی حتمی دی.</p>
+                                <form action="https://formspree.io/f/xdoqzged" method="POST">
+                                    <div class="form-group">
+                                        <label>نوم</label>
+                                        <input type="text" name="name" class="form-controls">
+                                    </div>
+
+                                    <div class="form-group">
+                                          <label>بریښنالیک</label>
+                                          <input type="email" name="email">
+                                    </div>
+
+                                    <div class="form-group">
+                                         <label>پیغام</label>
+                                         <textarea name="message"></textarea>
+                                    </div>
+
+                                      <!-- your other form fields go here -->
+                                      <button name="submit" type="submit" id="submit" class="axil-button btn button-rounded btn-primary">استول</button>
+                                    </form>
+                            </div>
+                            <!-- End Contact Form  -->
+                        </div>
+                        <!-- End About Area  -->
+                    </div>
+                    <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+                        <!-- Start Sidebar Area  -->
+                        <div class="sidebar-inner">
+
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_search mb--30">
+                                <h5 class="widget-title">Search</h5>
+                                <form action="#">
+                                    <div class="axil-search form-group">
+                                        <button type="submit" class="search-button"><i class="fal fa-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="Search">
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End Single Widget  -->
+
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_postlist mb--30">
+                                <h5 class="widget-title">نوی لیکنې</h5>
+                                <!-- Start Post List  -->
+                                <div class="post-medium-block">
+
+                                    <!-- Start Single Post  -->
+                                    {% for post in posts %}
+                                    <div class="content-block post-medium mb--20">
+                                        <div class="post-thumbnail">
+                                            <a href="{% url 'post-details' post.id %}">
+                                                <img src="{{ post.image.url }}" alt="Post Images">
+                                            </a>
+                                        </div>
+                                        <div class="post-content">
+                                            <h6 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h6>
+                                            <div class="post-meta">
+                                                <ul class="post-meta-list">
+                                                    <li>{{post.date}}</li>
+                                                    <li>{{post.view}} Views</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <!-- End Single Post  -->
+
+
+
+                                </div>
+                                <!-- End Post List  -->
+
+                            </div>
+                            <!-- End Single Widget  -->
+
+                        </div>
+                        <!-- End Sidebar Area  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Post List Wrapper  -->
+
+
+
+        <!-- Start Back To Top  -->
+        <a id="backto-top"></a>
+        <!-- End Back To Top  -->
+
+
+{% endblock body_block %}

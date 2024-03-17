@@ -1,0 +1,421 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load social_share %}
+
+
+{% block style_block %}
+
+.LgBtn{
+    color:blue;
+    text-decoration: underline;
+}
+#loginForm{
+    display: None;
+}
+
+{% endblock %}
+{% block body_block %}
+
+
+
+        <!-- Start Post Single Wrapper  -->
+        <div class="post-single-wrapper axil-section-gap bg-color-white" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8" style="max-width: 100%; overflow: auto; overflow-wrap: break-word; word-wrap: break-word;">
+
+                        <div class="axil-post-details">
+                            <h2 class="has-medium-font-size title">{{single_post.title}}</h2>
+                            <hr style="background-color: red; height: 5px;">
+                            <h2 style="display: inline-block;font-size: 13px;font-size: 1.8125rem;color: #fff;padding: 8px 10px;margin-bottom: 10px;margin-bottom: 0.625rem;background: #e64946;text-transform: uppercase;">{{single_post.post_author}}</h2>
+
+                            <figure class="wp-block-image">
+                                <img src="{{single_post.image.url}}" alt="Post Images">
+                            </figure>
+                            <div >
+                                {{ single_post.description|safe }}
+                            </div>
+                            <div class="social-share-block">
+                                <div class="post-like">
+                                    <a href="#"><i class="far fa-eye"></i><span>   لیدونکی {{single_post.view}} </span></a>
+                                </div>
+                                <ul class="social-icon md-size justify-content-center social-sharing">
+                                        <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                        <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                        <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                        <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+
+                                </ul>
+                            </div>
+
+                            <!-- Start Author  -->
+                            <div class="about-author">
+                                 <h2>لیکوال: </h2>
+                                <div class="media">
+                                    <div class="">
+                                        <a href="{% url 'author' single_post.post_author.id %}">
+                                            <img src="{{single_post.post_author.image.url}}" alt="Author Images" >
+                                        </a>
+                                    </div>
+                                    <div class="media-body mx-5" >
+                                        <div class="author-info">
+                                            <h5 class="title">
+                                                <a class="hover-flip-item-wrapper" href="{% url 'author' single_post.post_author.id %}">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="{{single_post.post_author.name}}">{{single_post.post_author.name}}</span>
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                            <span class="b3 subtitle">{% if single_post.post_author.no_post %} {{single_post.post_author.no_post}} {% else %} 0 {% endif %} لیکنی</span>
+                                        </div>
+                                        <div class="content">
+                                            <p class="b1 description">{{single_post.post_author.info|safe}}</p>
+                                            <ul class="social-share-transparent size-md">
+                                                <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                                <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                                <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                                <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Author  -->
+
+                            <!-- Start Comment Form Area  -->
+                            <div class="axil-comment-area" style="direction:rtl;">
+                                <div class="axil-total-comment-post">
+                                    <div class="title">
+                                        <h4 class="mb--0">{{no_comments}}+ تبصری</h4>
+                                    </div>
+                                    <div class="add-comment-button cerchio">
+                                        <button type="button" class="axil-button button-rounded rep" tabindex="0" ><span>خپله تبصره اضافه کړی.</span></button>
+                                    </div>
+                                </div>
+
+                                <!-- Start Comment Respond  -->
+                                <div class="comment-respond">
+                                    <h4 class="title">تبصره وکړئ.</h4>
+                                    <form action="{% url 'post-details' single_post.id %} " method="post">
+                                        {% csrf_token %}
+                                        <p class="comment-notes"><span id="email-notes">ستاسو بریښنالیک به نورو ته نه ښودل کیږی.</span></p>
+                                        <div class="row row--10">
+                                            {% for field in form %}
+                                            {% if field.id_for_label != 'id_message' %}
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label for="{{field.id_for_label}}" class="form-check-label">{{field.label}}</label>
+                                                    {{field}}
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                             <div class="col-lg-12 col-md-12 col-12">
+                                                <div class="form-group">
+                                                    <label for="{{field.id_for_label}}" class="form-check-label">{{field.label}}</label>
+                                                    {{field}}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <input type="hidden" value="0" name="cond" id="hide">
+                                            <div class="col-lg-3 col-md-5 col-9">
+                                                <button type="submit" class="btn p-2 btn-primary" id="submit" style="font-size:20px;">استول</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- End Comment Respond  -->
+
+                                <!-- Start Comment Area  -->
+                                <div class="axil-comment-area">
+                                    <h4 class="title">{{single_post.comments.all|length}} - تبصری</h4>
+                                    <ul class="comment-list">
+                                        <!-- Start Single Comment  -->
+                                        {% for comment in single_post.comments.all %}
+                                         {% if not comment.replay %}
+                                        <li class="comment">
+                                            <div class="comment-body">
+                                                <div class="single-comment">
+
+<!--                                                    <div class="comment-img">-->
+<!--                                                        <img src="{{comment.comments}}" alt="Author Images">-->
+<!--                                                    </div>-->
+                                                    <div class="comment-inner">
+                                                        <h6 class="commenter">
+                                                            <div class="hover-flip-item-wrapper">
+                                                                <span class="hover-flip-item">
+                                                                    <span data-text="{{comment.name}}">{{comment.name}}</span>
+                                                                </span>
+                                                            </div>
+                                                        </h6>
+                                                        <div class="comment-meta">
+                                                            <div class="time-spent">{{comment.datetime}}</div>
+                                                            <div class="reply-edit">
+                                                                <div class="reply">
+                                                                    <button type="button" class="comment-reply-link hover-flip-item-wrapper rep replay_post " data-cond="{{comment.id}}">
+                                                                        <span class="hover-flip-item">
+                                                                            <span data-text="Reply">Reply</span>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="comment-text">
+                                                            <p class="b2">{{comment.message}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             {% if comment.replay_comment is not None %}
+                                            <ul class="children" style="margin-right:15%;">
+                                                <!-- Start Single Comment  -->
+                                                {% for rep_comment in comment.replay_comment.all %}
+                                                <li class="comment">
+                                                    <div class="comment-body">
+                                                        <div class="single-comment">
+                                                            <div class="comment-inner">
+                                                                <h6 class="commenter">
+                                                                    <div class="hover-flip-item-wrapper">
+                                                                        <span class="hover-flip-item">
+                                                                            <span data-text="{{rep_comment.name}}">{{rep_comment.name}}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </h6>
+                                                                <div class="comment-meta">
+                                                                    <div class="time-spent">{{rep_comment.datetime}}</div>
+                                                                    <div class="reply-edit">
+                                                                        <div class="reply">
+                                                                            <button type="button" class="comment-reply-link hover-flip-item-wrapper rep replay_post" data-cond="{{rep_comment.id}}">
+                                                                                <span class="hover-flip-item">
+                                                                                    <span data-text="Reply">Reply</span>
+                                                                                </span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="comment-text">
+                                                                    <p class="b2">{{rep_comment.message}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- End Single Comment  -->
+                                                {% endfor %}
+                                            </ul>
+                                             {% endif %}
+                                        </li>
+                                         {% endif %}
+                                        <!-- End Single Comment  -->
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!-- End Comment Area  -->
+
+                            </div>
+                            <!-- End Comment Form Area  -->
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <!-- Start Sidebar Area  -->
+                        <div class="sidebar-inner">
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_search mb--30">
+                                <h5 class="widget-title">لټون</h5>
+                                <form action="{% url 'search' %}" method="get">
+                                    <div class="axil-search form-group">
+                                        <button type="submit" class="search-button"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="form-control" placeholder="لټون" name="search_val">
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- End Single Widget  -->
+
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_postlist mb--30">
+                                <h5 class="widget-title">دی ته ورته نوری لیکنی</h5>
+                                <!-- Start Post List  -->
+                                <div class="post-medium-block">
+                                    {% for post in related_post %}
+                                    <!-- Start Single Post  -->
+                                    <div class="content-block post-medium mb--20">
+                                        <div class="post-thumbnail">
+                                            <a href="{% url 'post-details' post.id %}">
+                                                <img src="{{post.image.url}}" alt="Post Images">
+                                            </a>
+                                        </div>
+                                        <div class="post-content">
+                                            <h6 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h6>
+                                            <div class="post-meta">
+                                                <ul class="post-meta-list">
+                                                    <li>{{post.datetime}}</li>
+                                                    <li>{{post.view}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Single Post  -->
+                                     {% endfor %}
+
+                                </div>
+                                <!-- End Post List  -->
+
+                            </div>
+                            <!-- End Single Widget  -->
+
+                            {% if not request.user.is_authenticated %}
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_newsletter mb--30">
+                                <!-- Start Post List  -->
+                                <div class="newsletter-inner text-center">
+                                    <h4 class="title mb--15">غواړۍ لیکنی وکړی؟</h4>
+
+                                    <p class="b2 mb--30"> نو خپل حساب<span type="button" class="LgBtn">دلته</span> پرانیځئ.</p>
+                                    <form method="post" enctype="multipart/form-data" action="{% url 'registration' %}" id="regForm">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+
+                                            {% for field in userform %}
+                                                {{field}}
+                                                {% for error in field.errors %}
+                                                    {{error}}
+                                                {% endfor %}
+                                            <hr>
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+
+                                    <form method="post" action="{% url 'login' %}" id="loginForm" >
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            {% for field in user_auth_form %}
+                                            <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                            {{field}}
+                                            {% for error in field.errors %}
+                                            <span class="text-danger">{{error}}</span>
+                                            {% endfor %}
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+
+
+                                     <div class="form-submit">
+                                            <button type="btn" class="cerchio axil-button button-rounded" id="subbtn"><span>استول</span></button>
+                                        </div>
+                                </div>
+                                <!-- End Post List  -->
+                            </div>
+                            <!-- End Single Widget  -->
+                            {% endif %}
+
+
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_social mb--30">
+                                <h5 class="widget-title">په ټولنیزو رسنیو کی هم مونږ سره اوسې</h5>
+                                <!-- Start Post List  -->
+                                <ul class="social-icon md-size justify-content-center social-sharing">
+                                    <ul class="social-icon color-tertiary md-size justify-content-start">
+                                    <li><a href="https://www.facebook.com/irfanullah.ahmadzai.549/"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="https://www.instagram.com/irfan.khan9902/"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="https://twitter.com/IrfanullahDhark"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="https://www.linkedin.com/in/irfan-khan-3b2519266/"><i class="fab fa-linkedin-in"></i></a></li>
+                                </ul>
+                                </ul>
+                                <!-- End Post List  -->
+                            </div>
+                            <!-- End Single Widget  -->
+
+                            <!-- Start Single Widget  -->
+                            <div class="axil-single-widget widget widget_postlist mb--30">
+                                <h5 class="widget-title">اوسنۍ نوی لیکنه</h5>
+                                <!-- Start Post List  -->
+                                <div class="post-medium-block">
+                                    {% for post in recent_post %}
+                                    <!-- Start Single Post  -->
+                                    <div class="content-block post-medium mb--20">
+                                        <div class="post-content">
+                                            <h6 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h6>
+                                            <div class="post-meta">
+                                                <ul class="post-meta-list">
+                                                    <li>{{post.datetime}}</li>
+                                                    <li>{{post.view}} Views</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Single Post  -->
+                                    {% endfor %}
+                                </div>
+                                <!-- End Post List  -->
+                            </div>
+                            <!-- End Single Widget  -->
+
+
+
+
+
+                        </div>
+                        <!-- End Sidebar Area  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Post Single Wrapper  -->
+
+
+{% endblock body_block %}
+
+{% block script_block %}
+
+<script>
+    $('document').ready(function(){
+        $('.rep').click(function(){
+           $('#id_name').focus();
+        })
+
+
+        $('.replay_post').click(function(){
+            var x = $(this).attr('data-cond')
+            $('#hide').val(x)
+            console.log(x)
+
+        })
+        let checkBtn = 0;
+        $('.LgBtn').click(function(){
+           if( checkBtn % 2 == 0){
+              $('#loginForm').css('display','block');
+              $('#regForm').css('display','none');
+              checkBtn += 1;
+           }
+           else if(checkBtn % 2 == 1){
+            $('#loginForm').css('display','none');
+              $('#regForm').css('display','block');
+              checkBtn += 1;
+           }
+        })
+        $('#subbtn').click(function(){
+            if( checkBtn % 2 == 1){
+               $('#loginForm').submit();
+           }else if( checkBtn % 2 == 0){
+                 $('#regForm').submit();
+           }
+        })
+
+        $('#submit').click(function(){
+            function saveUserData() {
+
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+
+            localStorage.setItem('user_name', name);
+            localStorage.setItem('user_email', email);
+        }
+
+        })
+
+    })
+
+</script>
+{% endblock script_block %}

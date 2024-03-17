@@ -1,0 +1,467 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load static %}
+{% load social_share %}
+{% load embed_video_tags %}
+
+{% block body_block %}
+
+
+        <!-- Start Banner Area -->
+        <h1 class="d-none">Home Creative Blog</h1>
+        <div class="slider-area creative-slider-area bg-color-grey">
+            <div class="axil-slide slider-style-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-6 order-2 order-lg-1">
+                            <div class="slider-inner slick-nav-avtivation-new">
+                                <!-- Start Single Blog  -->
+                                {% for post in posts %}
+                                <div class="content-block post-medium post-medium-border">
+                                    <div class="post-thumbnail">
+                                        <a href="{% url 'post-details' post.id %}">
+                                            <img src="{{post.image.url}}" alt="Post Images">
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <div class="post-cat">
+                                            <div class="post-cat-list">
+                                                <a href="">{{post.post_cat}}</a>
+                                            </div>
+                                        </div>
+                                        <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                                        <div class="post-button">
+                                            <a class="axil-button button-rounded color-secondary-alt" href="{% url 'post-details' post.id %}">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Single Blog  -->
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-1 order-lg-2">
+                            <div class="thumbnail-wrapper slick-for-avtivation-new">
+                                {% for post in posts %}
+                                <div class="thumbnail">
+                                    <a href="{% url 'post-details' post.id %}">
+                                        <img src="{{post.image.url}}" alt="Thumbnail Images">
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Banner Area -->
+
+         <!-- Start Categories List  -->
+         <div class="axil-categories-list axil-section-gap bg-color-grey">
+            <div class="container">
+                <div class="row align-items-center mb--30" style="direction: rtl;">
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-12">
+                        <div class="section-title">
+                            <h2 class="title">ډیری کتل شوی موضوع ګانی</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="direction:rtl;">
+                    <div class="col-lg-12">
+                        <!-- Start List Wrapper  -->
+                        <div class="list-categories d-flex flex-wrap">
+
+                            <!-- Start Single Category  -->
+                            {% for post in trending_topics %}
+                            {% if post %}
+                            <div class="single-cat">
+                                <div class="inner">
+                                    <a href="{% url 'sub-post-list' post.id %}">
+                                        <div class="thumbnail">
+                                            <img src="{{post.picture.url}}" alt="post categories images">
+                                        </div>
+                                        <div class="content">
+                                            <h5 class="title">{{post}}</h5>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- End Single Category  -->
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!-- Start List Wrapper  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Start Categories List  -->
+
+         <!-- Start Trending Post Area  -->
+         <div class="axil-trending-post-area axil-section-gap bg-color-white" >
+            <div class="container">
+                <div class="row" STYLE="direction:rtl;">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">مشهوری موضوع ګانی</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Start Axil Tab Button  -->
+                        <ul class="axil-tab-button nav nav-tabs mt--20" role="tablist" style="direction:rtl;">
+                            {% with active_cat=cat.first %}
+                            {% for cat in pop_post %}
+                            {% if active_cat.id == cat.id %}
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="trend-one" data-bs-toggle="tab" href="#trendone" role="tab" aria-controls="trend-one" aria-selected="true">{{cat}}</a>
+                            </li>
+                            {% endif %}
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="trend-two" data-bs-toggle="tab" href="#{{cat.id}}" role="tab" aria-controls="trend-two" aria-selected="false">{{cat}}</a>
+                            </li>
+                            {% endfor %}
+                            {% endwith %}
+                        </ul>
+                        <!-- End Axil Tab Button  -->
+
+                        <!-- Start Axil Tab Content  -->
+                        <div class="tab-content">
+                            {% with active_cat=pop_post.0 %}
+                            {% for cat in pop_post %}
+                            <!-- Single Tab Content  -->
+                            <div class="row trend-tab-content tab-pane fade show {% if cat.id == active_cat.id %} active {% endif %}" id="{{cat.id}}" role="tabpanel" aria-labelledby="trend-one">
+                                <div class="col-lg-8">
+                                    {% for post in cat.post_sub.all|slice:4 %}
+                                    {% if post.is_approved %}
+                                    <!-- Start Single Post  -->
+                                    <div class="content-block trend-post post-order-list axil-control" style="direction:rtl;">
+                                         <div class="post-thumbnail">
+                                            <a href="{% url 'post-details' post.id %}">
+                                                <img src="{{post.image.url}}" alt="Post Images">
+                                            </a>
+                                        </div>
+                                        <div class="post-inner">
+                                            <span class="post-order-list">{{forloop.counter}}</span>
+                                            <div class="post-content">
+                                                <div class="post-cat">
+                                                    <div class="post-cat-list">
+                                                        <a class="hover-flip-item-wrapper" href="#main-cat.html">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="{{post.post_cat}}">{{post.post_cat}}</span>
+                                                            </span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <h3 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h3>
+                                                <div class="post-meta-wrapper">
+                                                    <div class="post-meta">
+                                                        <div class="content">
+                                                            <h6 class="post-author-name">
+                                                                <a class="hover-flip-item-wrapper" href="{% url 'author' post.post_author.id %}">
+                                                                    <span class="hover-flip-item">
+                                                                        <span data-text="{{post.post_author}}">{{post.post_author}}</span>
+                                                                    </span>
+                                                                </a>
+                                                            </h6>
+                                                            <ul class="post-meta-list">
+                                                                <li>{{post.date}}</li>
+                                                                <li>{{post.view}} لیدونکی</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="social-icon md-size justify-content-center social-sharing">
+                                                        <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                                        <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                                        <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                                        <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- End Single Post  -->
+                                    {% endif %}
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+                            <!-- Single Tab Content  -->
+                            {% endfor %}
+                            {% endwith %}
+
+                        </div>
+                        <!-- End Axil Tab Content  -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Trending Post Area  -->
+
+
+
+        <div class="axil-seo-post-banner seoblog-banner axil-section-gap bg-color-grey" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                {% for cat in trending_topics|slice:":4" %}
+                    {% if forloop.counter0 < 2 %}
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-12">
+                        <h3>{{cat}}</h3>
+                        <hr style="background-color: red; height: 5px;">
+                        {% for post in  cat.post_sub.all|slice:":3" %}
+                       <!-- Start Single Post  -->
+                       <div class="content-block post-medium post-medium-border">
+                        <div class="post-thumbnail">
+                            <a href="{% url 'post-details' post.id %}">
+                                <img src="{{post.image.url}}" alt="Post Images">
+                            </a>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-cat">
+                                <div class="post-cat-list">
+                                    <a class="hover-flip-item-wrapper" href="#main-menu.html">
+                                        <span class="hover-flip-item">
+                                            <span data-text="{{post.sub_cat}}">{{post.sub_cat}}</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                            <p class="blog-desc limit-string" data-max-length="100">{{post.description|safe|truncate_html:300 }}</p>
+                        </div>
+                    </div>
+                    <!-- End Single Post  -->
+                        {% endfor %}
+
+                    </div>
+                    {% else %}
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-12">
+                        <h3>{{cat}}</h3>
+                        <hr style="background-color: red; height: 5px;">
+                        {% for post in  cat.post_sub.all|slice:":4" %}
+                       <!-- Start Single Post  -->
+                       <div class="content-block post-medium post-medium-border">
+                        <div class="post-thumbnail">
+                            <a href="{% url 'post-details' post.id %}">
+                                <img src="{{post.image.url}}" alt="Post Images">
+                            </a>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-cat">
+                                <div class="post-cat-list">
+                                    <a class="hover-flip-item-wrapper" href="#main-menu.html">
+                                        <span class="hover-flip-item">
+                                            <span data-text="{{post.sub_cat}}">{{post.sub_cat}}</span>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                            <p class="blog-desc limit-string" data-max-length="100">{{post.description|safe|truncate_html:300 }}</p>
+                        </div>
+                    </div>
+                    <!-- End Single Post  -->
+                        {% endfor %}
+
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+          <!-- Start Post List Wrapper  -->
+          <div class="axil-post-list-area post-listview-visible-color axil-section-gap bg-color-white" style="direction:rtl;">
+            <div class="container">
+                <div class="row mb-5 pb-5">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">نوی لیکنی</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-xl-12">
+                        {% for post in new_posts %}
+                         <!-- Start Post List  -->
+                         <div class="content-block post-list-view axil-control mt--30">
+                            <div class="post-thumbnail">
+                                <a href="{% url 'post-details' post.id %}">
+                                    <img src="{{post.image.url}}" alt="Post Images">
+                                </a>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-cat">
+                                    <div class="post-cat-list">
+                                        <a class="hover-flip-item-wrapper" href="#main-menu.html">
+                                            <span class="hover-flip-item">
+                                                <span data-text="{{post.post_cat}}">{{post.post_cat}}</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                                <p>{{ post.description|safe|truncate_html:300 }}</p>
+                                <div class="post-meta-wrapper">
+                                    <div class="post-meta">
+                                        <div class="content">
+                                            <h6 class="post-author-name">
+                                                <a class="hover-flip-item-wrapper" href="{% url 'author' post.post_author.id %}">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="{{post.post_author}}">{{post.post_author}}</span>
+                                                    </span>
+                                                </a>
+                                            </h6>
+                                            <ul class="post-meta-list">
+                                                <li>{{post.date}}</li>
+                                                <li>{{post.view}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="social-icon md-size justify-content-center social-sharing">
+                                    <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                    <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                    <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                    <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Post List  -->
+                        {% endfor %}
+
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+        <!-- End Post List Wrapper  -->
+
+
+          <!-- Start Video Area  -->
+          <div class="axil-video-post-area axil-section-gap bg-color-black">
+            <div class="container"  style="direction:rtl;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">ویډیو یی ویناوی</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% if first_video %}
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-md-6 col-12">
+                        <!-- Start Post List  -->
+                        <div class="content-block post-default image-rounded mt--30">
+                            <div class="post-thumbnail">
+                                {%  video first_video.link '960x420' %}
+                            </div>
+                            <div class="post-content">
+                                <div class="post-cat">
+                                    <div class="post-cat-list">
+                                            <span class="hover-flip-item">
+                                                <span data-text="{{first_video.main_cat}}">{{first_video.main_cat}}</span>
+                                            </span>
+                                    </div>
+                                </div>
+                                <h3 class="title"><a href="{% static 'post-details.html' %}">{{ first_video.title }}</a></h3>
+                                <div class="post-meta-wrapper">
+                                    <div class="post-meta">
+                                        <div class="content">
+                                            <ul class="post-meta-list">
+                                                <li>{{first_video.date}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Post List  -->
+                    </div>
+                    {% endif %}
+                    {% if all_videos %}
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-md-6 col-12">
+                        <div class="row">
+                            {% for item in all_videos %}
+                            <!-- Start Post List  -->
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="content-block post-default image-rounded mt--30">
+                                    <div class="post-thumbnail">
+                                        {%  video item.link  '426x240' %}
+                                    </div>
+                                    <div class="post-content">
+                                        <div class="post-cat">
+                                            <div class="post-cat-list">
+                                                <a class="hover-flip-item-wrapper" href="{% url 'sub-post-list' item.sub_cat.id %}">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="{{item.sub_cat}}">{{item.sub_cat}}</span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h5 class="title"><a href="{{item.link}}" >{{item.title}}</a></h5>
+                                         <div class="post-meta-wrapper">
+                                    <div class="post-meta">
+                                        <div class="content">
+                                            <ul class="post-meta-list">
+                                                <li>{{first_video.date}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Post List  -->
+                            {% endfor %}
+
+
+
+
+
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- End Video Area  -->
+
+
+
+        <!-- Start Back To Top  -->
+        <a id="backto-top"></a>
+        <!-- End Back To Top  -->
+
+    </div>
+
+
+{% endblock body_block %}
+
+
+{% block script_block %}
+<script>
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock script_block %}

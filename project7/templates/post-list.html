@@ -1,0 +1,179 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load social_share %}
+
+{% block body_block %}
+
+        <!-- Start Review Wrapper  -->
+        <div class="axil-review-area post-listview-visible-color axil-section-gap bg-color-grey" style="direction:rtl;">
+            <div class="container">
+                {% if main_cat %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">{{main_cat}}</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <ul class="axil-tab-button nav nav-tabs mt--20" id="reviewTab" role="tablist">
+                        {% with check=main_cat.0 %}
+                        {% for sub_cat in main_cat.sub_category.all %}
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link {% if sub_cat.id == check.id  %} active {% endif %}" id="review-{{sub_cat.id}}" data-bs-toggle="tab" href="#{{sub_cat.id}}" role="tab" aria-controls="review-{{sub_cat.id}}" aria-selected="true">{{sub_cat}}</a>
+                            </li>
+                        {% endfor %}
+                        {% endwith %}
+                        </ul>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">{{sub_cat}}</h2>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="row tab-content">
+                    {% if main_cat %}
+                    {% for sub_cat in main_cat.sub_category.all %}
+                    <div class="col-lg-12 tab-pane fade show active" id="{{sub_cat.id}}" role="tabpanel" aria-labelledby="review-{{sub_cat.id}}">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12 mt--30">
+                                {% for post in sub_cat.post_sub.all %}
+                                {% if post.is_approved %}
+                                <!-- Start Post List  -->
+                                <div class="content-block post-list-view with-bg-solid mt--30">
+                                    <div class="post-thumbnail">
+                                        <a href="{% url 'post-details' post.id %}">
+                                            <img src="{{post.image.url}}" alt="Post Images">
+                                            <div class="review-count">
+                                                <span>{{post.view}}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                                          <div class="post-cat">
+                                            <div class="post-cat-list">
+                                               <p>{{ post.description|safe|truncate_html:300 }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="post-meta-wrapper">
+                                            <div class="post-meta">
+                                                <div class="content">
+                                                    <h6 class="post-author-name">
+                                                        <a class="hover-flip-item-wrapper" href="{% url 'author' post.post_author.id %}">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="{{post.post_author}}">{{post.post_author}}</span>
+                                                            </span>
+                                                        </a>
+                                                    </h6>
+                                                    <ul class="post-meta-list">
+                                                        <li>{{post.date}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <ul class="social-icon md-size justify-content-center social-sharing">
+                                                <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                                <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                                <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                                <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Post List  -->
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {% else %}
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12 mt--30">
+                                {% for post in sub_cat.post_sub.all %}
+                                {% if post.is_approved %}
+                                <!-- Start Post List  -->
+                                <div class="content-block post-list-view with-bg-solid mt--30">
+                                    <div class="post-thumbnail">
+                                        <a href="{% url 'post-details' post.id %}">
+                                            <img src="{{post.image.url}}" alt="Post Images">
+                                            <div class="review-count">
+                                                <span>{{post.view}}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                                          <div class="post-cat">
+                                            <div class="post-cat-list">
+                                               <p>{{ post.description|safe|truncate_html:300 }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="post-meta-wrapper">
+                                            <div class="post-meta">
+                                                <div class="content">
+                                                    <h6 class="post-author-name">
+                                                        <a class="hover-flip-item-wrapper" href="{% url 'author' post.post_author.id %}">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="{{post.post_author}}">{{post.post_author}}</span>
+                                                            </span>
+                                                        </a>
+                                                    </h6>
+                                                    <ul class="post-meta-list">
+                                                        <li>{{post.date}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <ul class="social-share-transparent justify-content-end">
+                                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                                <li><a href="#"><i class="fas fa-link"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Post List  -->
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+        <!-- End Review Wrapper  -->
+
+{% endblock body_block %}
+
+{% block facbook_block %}
+
+{% endblock %}
+
+{% block script_block %}
+<script>
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock script_block %}
+

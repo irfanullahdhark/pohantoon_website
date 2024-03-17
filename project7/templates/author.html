@@ -1,0 +1,130 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load social_share %}
+
+{% block body_block %}
+
+        <!-- Start Author Area  -->
+
+        <div class="axil-author-area axil-author-banner bg-color-grey" >
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div style="direction:rtl; margin-top:20px;">
+                            <a href="{% url 'create-post' %}" class="btn btn-success" style="font-size:20px;">دلته لیکنه وکړئ.</a>
+                        </div>
+
+                        {% if messages %}
+                        <div id="msg" style="direction:rtl;" class="mt-5">
+                            {% for message in messages %}
+                                <h4 {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}>{{message}} </h4>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="about-author">
+                            <div class="media">
+                                {% if author.image %}
+                                <div >
+                                        <img src="{{author.image.url}}" alt="Author Images" style="border-radius:40%;">
+                                </div>
+                                {% endif %}
+                                <div class="media-body m-5" style="direction:rtl;">
+                                    <div class="author-info">
+                                        <a href="{% url 'logout' %}" class="btn btn-outline-danger mb-5" style="font-size:20px;">خپل اکونټ پریږدئ.</a>
+                                        <h1 class="title"><a href="#">{{author.name}}</a></h1>
+                                    </div>
+                                    <div class="content">
+                                        {% if author.info %}
+                                        <p class="b1 description">{{author.info|safe}}</p>
+                                        {% else %}
+                                        <form method="post">
+                                           {% csrf_token %}
+                                            {% for field in form %}
+                                                {{field}}
+                                            {% endfor%}
+                                            <button type="submit" class="btn btn-success " style="width:100px;">ثبتول</button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Author Area  -->
+
+        <!-- Start Post List Wrapper  -->
+        <div class="axil-post-list-area axil-section-gap bg-color-white" style="direction:rtl;">
+            <div class="container" style="direction:rtl;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-title">
+                            <h2 class="title mb--40">د ښاغلی {{author.name}} لیکنی</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-12">
+                        <!-- Start Post List  -->
+                        {% for post in author_posts %}
+                        <div class="content-block post-list-view mt--30">
+                            <div class="post-thumbnail">
+                                <a href="{% url 'post-details' post.id %}">
+                                    <img src="{{post.image.url}}" alt="Post Images">
+                                </a>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-cat">
+                                    <div class="post-cat-list">
+                                        <a class="hover-flip-item-wrapper" href="{% url 'post-list' post.post_cat.id %}">
+                                            <span class="hover-flip-item">
+                                                <span data-text="{{post.post_cat}}">{{post.post_cat}}</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <h4 class="title"><a href="{% static 'post-details.html' %}">{{post.title}}</a></h4>
+                                <div class="post-meta-wrapper">
+                                    <div class="post-meta">
+                                        <div class="content">
+                                            <ul class="post-meta-list">
+                                                <li>{{post.date}}</li>
+                                                <li>{{post.view}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <ul class="social-icon md-size justify-content-center social-sharing">
+                                    <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                    <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                    <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                    <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Post List  -->
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Post List Wrapper  -->
+
+        <!-- Start Back To Top  -->
+        <a id="backto-top"></a>
+        <!-- End Back To Top  -->
+
+ {% endblock body_block %}
+
+{% block script_block %}
+<script>
+    $(document).ready(function(){
+        setTimeout(removeMessage,30000);
+           function removeMessage(){
+                $('#msg').css('display','none');
+           }
+    })
+</script>
+{% endblock %}

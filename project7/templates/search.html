@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load social_share %}
+
+{% block body_block %}
+
+        <!-- Start Review Wrapper  -->
+        <div class="axil-review-area post-listview-visible-color axil-section-gap bg-color-grey" style="direction:rtl;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="axil-tab-button nav nav-tabs mt--20" id="reviewTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                               <p>ټولی <span class="text-danger">{{posts|length}}</span> لیکنی وموندل شوی.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row tab-content">
+                    <div class="col-lg-12 tab-pane fade show active" role="tabpanel">
+                        <div class="row">
+                            <div class="col-lg-12 col-xl-12 mt--30">
+                                <!-- Start Post List  -->
+                                {% for post in posts %}
+                                <div class="content-block post-list-view with-bg-solid mt--30">
+                                    <div class="post-thumbnail">
+                                        <a href="{% url 'post-details' post.id %}">
+                                            <img src="{{post.image.url}}" alt="Post Images">
+                                            <div class="review-count">
+                                                <span>{{post.view}}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="post-content">
+                                        <h4 class="title"><a href="{% url 'post-details' post.id %}">{{post.title}}</a></h4>
+                                          <div class="post-cat">
+                                            <div class="post-cat-list">
+                                               <p>{{ post.description|safe|truncate_html:300 }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="post-meta-wrapper">
+                                            <div class="post-meta">
+                                                <div class="content">
+                                                    <h6 class="post-author-name">
+                                                        <a class="hover-flip-item-wrapper" href="{% url 'author' post.post_author.id %}">
+                                                            <span class="hover-flip-item">
+                                                                <span data-text="{{post.post_author}}">{{post.post_author}}</span>
+                                                            </span>
+                                                        </a>
+                                                    </h6>
+                                                    <ul class="post-meta-list">
+                                                        <li>{{post.date}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                             <ul class="social-icon md-size justify-content-center social-sharing">
+                                                        <li>{% post_to_facebook object_or_url "<span class='fab fa-facebook'></span>" %}</li>
+                                                        <li>{% post_to_twitter "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fab fa-twitter'></span>" %}</li>
+                                                        <li>{% post_to_whatsapp object_or_url "<span class='fab fa-whatsapp'></span>" %}</li>
+                                                        <li>{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "<span class='fa fa-envelope'></span>" %}</li>
+                                             </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <!-- End Post List  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Review Wrapper  -->
+
+{% endblock body_block %}
+
+{% block script_block %}
+<script>
+
+	var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock script_block %}
+
